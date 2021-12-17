@@ -10,6 +10,7 @@ import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.Query;
 import javax.persistence.EntityNotFoundException;
+import javax.persistence.Persistence;
 import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Root;
 import logica.Cliente;
@@ -29,6 +30,11 @@ public class ClienteJpaController implements Serializable {
     public EntityManager getEntityManager() {
         return emf.createEntityManager();
     }
+
+    public ClienteJpaController() {
+        emf = Persistence.createEntityManagerFactory("ServicioTuristicoPU");
+    }
+    
 
     public void create(Cliente cliente) {
         EntityManager em = null;
