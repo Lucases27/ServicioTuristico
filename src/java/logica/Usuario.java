@@ -1,13 +1,13 @@
 package logica;
 
 import java.io.Serializable;
+import java.util.List;
 import javax.persistence.Basic;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.OneToOne;
+import javax.persistence.OneToMany;
 
 @Entity
 public class Usuario implements Serializable {
@@ -17,15 +17,27 @@ public class Usuario implements Serializable {
     @Basic
     private String nombre_usuario;
     private String contrasenia;
+    @OneToMany
+    private List<Venta> lista_ventas;
     
     public Usuario() {
     }
 
-    public Usuario(int id_usuario, String nombre_usuario, String contrasenia) {
+    public Usuario(int id_usuario, String nombre_usuario, String contrasenia, List<Venta> lista_ventas) {
         this.id_usuario = id_usuario;
         this.nombre_usuario = nombre_usuario;
         this.contrasenia = contrasenia;
+        this.lista_ventas = lista_ventas;
     }
+
+    public List<Venta> getLista_ventas() {
+        return lista_ventas;
+    }
+
+    public void setLista_ventas(List<Venta> lista_ventas) {
+        this.lista_ventas = lista_ventas;
+    }
+
 
     public int getId_usuario() {
         return id_usuario;

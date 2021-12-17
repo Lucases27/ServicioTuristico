@@ -2,11 +2,13 @@ package logica;
 
 import java.io.Serializable;
 import java.util.Date;
+import java.util.List;
 import javax.persistence.Basic;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.OneToMany;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 
@@ -25,21 +27,33 @@ public class Cliente implements Serializable {
     private String email;
     @Temporal(TemporalType.DATE)
     private Date fecha_nac;
+    @OneToMany
+    private List<Venta> lista_ventas;
 
     public Cliente() {
     }
 
-    public Cliente(int id_cliente, String nombre, String apellido, String direccion, String dni, Date fecha_nac, String nacionalidad, String celular, String email) {
+    public Cliente(int id_cliente, String nombre, String apellido, String direccion, String dni, String nacionalidad, String celular, String email, Date fecha_nac, List<Venta> lista_ventas) {
         this.id_cliente = id_cliente;
         this.nombre = nombre;
         this.apellido = apellido;
         this.direccion = direccion;
         this.dni = dni;
-        this.fecha_nac = fecha_nac;
         this.nacionalidad = nacionalidad;
         this.celular = celular;
         this.email = email;
+        this.fecha_nac = fecha_nac;
+        this.lista_ventas = lista_ventas;
     }
+
+    public List<Venta> getLista_ventas() {
+        return lista_ventas;
+    }
+
+    public void setLista_ventas(List<Venta> lista_ventas) {
+        this.lista_ventas = lista_ventas;
+    }
+    
     
     public int getId_cliente() {
         return id_cliente;

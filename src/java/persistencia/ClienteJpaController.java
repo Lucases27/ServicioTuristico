@@ -5,14 +5,16 @@
 package persistencia;
 
 import java.io.Serializable;
+import javax.persistence.Query;
+import javax.persistence.EntityNotFoundException;
+import javax.persistence.criteria.CriteriaQuery;
+import javax.persistence.criteria.Root;
+import logica.Venta;
+import java.util.ArrayList;
 import java.util.List;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
-import javax.persistence.Query;
-import javax.persistence.EntityNotFoundException;
 import javax.persistence.Persistence;
-import javax.persistence.criteria.CriteriaQuery;
-import javax.persistence.criteria.Root;
 import logica.Cliente;
 import persistencia.exceptions.NonexistentEntityException;
 
@@ -25,23 +27,39 @@ public class ClienteJpaController implements Serializable {
     public ClienteJpaController(EntityManagerFactory emf) {
         this.emf = emf;
     }
+    public ClienteJpaController( ) {
+        emf = Persistence.createEntityManagerFactory("ServicioTuristicoPU");
+    }
     private EntityManagerFactory emf = null;
 
     public EntityManager getEntityManager() {
         return emf.createEntityManager();
     }
 
-    public ClienteJpaController() {
-        emf = Persistence.createEntityManagerFactory("ServicioTuristicoPU");
-    }
-    
-
     public void create(Cliente cliente) {
+        if (cliente.getLista_ventas() == null) {
+            cliente.setLista_ventas(new ArrayList<Venta>());
+        }
         EntityManager em = null;
         try {
             em = getEntityManager();
             em.getTransaction().begin();
+            List<Venta> attachedLista_ventas = new ArrayList<Venta>();
+            for (Venta lista_ventasVentaToAttach : cliente.getLista_ventas()) {
+                lista_ventasVentaToAttach = em.getReference(lista_ventasVentaToAttach.getClass(), lista_ventasVentaToAttach.getNum_venta());
+                attachedLista_ventas.add(lista_ventasVentaToAttach);
+            }
+            cliente.setLista_ventas(attachedLista_ventas);
             em.persist(cliente);
+            for (Venta lista_ventasVenta : cliente.getLista_ventas()) {
+                Cliente oldClienteOfLista_ventasVenta = lista_ventasVenta.getCliente();
+                lista_ventasVenta.setCliente(cliente);
+                lista_ventasVenta = em.merge(lista_ventasVenta);
+                if (oldClienteOfLista_ventasVenta != null) {
+                    oldClienteOfLista_ventasVenta.getLista_ventas().remove(lista_ventasVenta);
+                    oldClienteOfLista_ventasVenta = em.merge(oldClienteOfLista_ventasVenta);
+                }
+            }
             em.getTransaction().commit();
         } finally {
             if (em != null) {
@@ -55,7 +73,34 @@ public class ClienteJpaController implements Serializable {
         try {
             em = getEntityManager();
             em.getTransaction().begin();
+            Cliente persistentCliente = em.find(Cliente.class, cliente.getId_cliente());
+            List<Venta> lista_ventasOld = persistentCliente.getLista_ventas();
+            List<Venta> lista_ventasNew = cliente.getLista_ventas();
+            List<Venta> attachedLista_ventasNew = new ArrayList<Venta>();
+            for (Venta lista_ventasNewVentaToAttach : lista_ventasNew) {
+                lista_ventasNewVentaToAttach = em.getReference(lista_ventasNewVentaToAttach.getClass(), lista_ventasNewVentaToAttach.getNum_venta());
+                attachedLista_ventasNew.add(lista_ventasNewVentaToAttach);
+            }
+            lista_ventasNew = attachedLista_ventasNew;
+            cliente.setLista_ventas(lista_ventasNew);
             cliente = em.merge(cliente);
+            for (Venta lista_ventasOldVenta : lista_ventasOld) {
+                if (!lista_ventasNew.contains(lista_ventasOldVenta)) {
+                    lista_ventasOldVenta.setCliente(null);
+                    lista_ventasOldVenta = em.merge(lista_ventasOldVenta);
+                }
+            }
+            for (Venta lista_ventasNewVenta : lista_ventasNew) {
+                if (!lista_ventasOld.contains(lista_ventasNewVenta)) {
+                    Cliente oldClienteOfLista_ventasNewVenta = lista_ventasNewVenta.getCliente();
+                    lista_ventasNewVenta.setCliente(cliente);
+                    lista_ventasNewVenta = em.merge(lista_ventasNewVenta);
+                    if (oldClienteOfLista_ventasNewVenta != null && !oldClienteOfLista_ventasNewVenta.equals(cliente)) {
+                        oldClienteOfLista_ventasNewVenta.getLista_ventas().remove(lista_ventasNewVenta);
+                        oldClienteOfLista_ventasNewVenta = em.merge(oldClienteOfLista_ventasNewVenta);
+                    }
+                }
+            }
             em.getTransaction().commit();
         } catch (Exception ex) {
             String msg = ex.getLocalizedMessage();
@@ -84,6 +129,11 @@ public class ClienteJpaController implements Serializable {
                 cliente.getId_cliente();
             } catch (EntityNotFoundException enfe) {
                 throw new NonexistentEntityException("The cliente with id " + id + " no longer exists.", enfe);
+            }
+            List<Venta> lista_ventas = cliente.getLista_ventas();
+            for (Venta lista_ventasVenta : lista_ventas) {
+                lista_ventasVenta.setCliente(null);
+                lista_ventasVenta = em.merge(lista_ventasVenta);
             }
             em.remove(cliente);
             em.getTransaction().commit();

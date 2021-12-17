@@ -7,6 +7,7 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.ManyToMany;
 import javax.persistence.OneToMany;
 
 @Entity
@@ -16,17 +17,30 @@ public class Paquete implements Serializable {
     private int codigo_paquete;
     @Basic
     private double costo_paquete;
-    @OneToMany(mappedBy ="paquete")
+    @ManyToMany()
     private List<Servicio> lista_servicios;
-
+    @OneToMany
+    private List<Venta> lista_ventas;
+    
     public Paquete() {
     }
 
-    public Paquete(int codigo_paquete, List<Servicio> lista_servicios, double costo_paquete) {
+    public Paquete(int codigo_paquete, double costo_paquete, List<Servicio> lista_servicios, List<Venta> lista_ventas) {
         this.codigo_paquete = codigo_paquete;
-        this.lista_servicios = lista_servicios;
         this.costo_paquete = costo_paquete;
+        this.lista_servicios = lista_servicios;
+        this.lista_ventas = lista_ventas;
     }
+
+    public List<Venta> getLista_ventas() {
+        return lista_ventas;
+    }
+
+    public void setLista_ventas(List<Venta> lista_ventas) {
+        this.lista_ventas = lista_ventas;
+    }
+
+
 
     public int getCodigo_paquete() {
         return codigo_paquete;
