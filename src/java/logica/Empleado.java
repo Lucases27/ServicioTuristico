@@ -3,6 +3,7 @@ package logica;
 import java.io.Serializable;
 import java.util.Date;
 import javax.persistence.Basic;
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -20,6 +21,7 @@ public class Empleado implements Serializable {
     private String nombre;
     private String apellido;
     private String direccion;
+    @Column(unique = true)
     private String dni;
     private String nacionalidad;
     private String celular;
