@@ -34,8 +34,7 @@ public class Empleado implements Serializable {
     public Empleado() {
     }
 
-    public Empleado(int id_empleado, String nombre, String apellido, String direccion, String dni, Date fecha_nac, String nacionalidad, String celular, String email, String cargo, double sueldo, Usuario usuario) {
-        this.id_empleado = id_empleado;
+    public Empleado(String nombre, String apellido, String direccion, String dni, Date fecha_nac, String nacionalidad, String celular, String email, String cargo, double sueldo, Usuario usuario) {
         this.nombre = nombre;
         this.apellido = apellido;
         this.direccion = direccion;

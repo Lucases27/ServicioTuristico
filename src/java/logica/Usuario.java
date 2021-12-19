@@ -29,6 +29,10 @@ public class Usuario implements Serializable {
         this.contrasenia = contrasenia;
         this.lista_ventas = lista_ventas;
     }
+    public Usuario(String nombre_usuario, String contrasenia) {
+        this.nombre_usuario = nombre_usuario;
+        this.contrasenia = contrasenia;
+    }
 
     public List<Venta> getLista_ventas() {
         return lista_ventas;
