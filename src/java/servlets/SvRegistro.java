@@ -45,15 +45,27 @@ public class SvRegistro extends HttpServlet {
         String nombreUsuario  = request.getParameter("nombreUsuario");
         String pass = request.getParameter("pass");
         Date fNac = null;
+        boolean alta = false;
+        String mensaje = "";
+        
         try {
             fNac = new SimpleDateFormat("yyyy-MM-dd").parse(fecha_nac);
         } catch (Exception e) {
             System.out.println("no se pudo");
         }
         
-        control.crearEmpleado(nombre, apellido,direccion,dni,nacionalidad,celular,
+        try {
+            alta = control.crearEmpleado(nombre, apellido,direccion,dni,nacionalidad,celular,
                 email,cargo,sueldo,nombreUsuario,pass,fNac);
+        } catch (Exception e) {
+        }
+        if(alta){
+            mensaje = "Empleado creado con exito!";
+        }else{
+            mensaje = "Error al crear el empleado. USUARIO O DNI YA EXISTENTES.";
+        }
         
+        System.out.println("mensaje: "+mensaje);
     }
 
 

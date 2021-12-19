@@ -122,48 +122,6 @@
 				</div>
 			</div> 
 	</section>
-	<!-- ======= Tabla Section ======= -->
-	<section id="tienda" class="tienda">
-			<div class="container">
-				<div class="section-title">
-					<h2>Tienda</h2>
-					<p>Productos que vendemos</p>
-				</div>
-				<div class="row">
-					<div class="table-responsive">
-					    <table class="table table-bordered table-sm table-hover mb-0 text-center">
-				            <thead>
-				                <tr style="background:#1977cc;color:white" class="text-center">
-                                                    <td>Img</td>
-				                    <td>Nombre</td>
-				                    <td>Descripci�n</td>
-				                    <td>Precio</td>
-				                    <td>Disponibilidad</td>
-				                </tr>
-				            </thead>
-			           		<tbody>
-				                <c:forEach items="${tiendaProductos}" var="prod">
-				                	<tr>
-				                	<td><img src="images/${prod.getImgLink()}" alt="Imagen del producto" width="150" height="150"></td>
-				                 	<td>${prod.getNombre()}</td>
-				                 	<td>${prod.getDescripcion()}</td>
-				                 	<td>$ ${prod.getPrecio()}</td>
-				                 	<c:choose>
-									    <c:when test="${prod.getCantidad() > 10}">
-									    	<td class="text-primary text-center">Disponible</td>
-									    </c:when>    
-									    <c:otherwise>
-									    	<td class="text-danger text-center">Sin stock</td>
-										</c:otherwise> 
-									</c:choose>
-				                	</tr>
-				            	</c:forEach>
-				            </tbody>
-				        </table>
-				    </div>
-				</div>
-			</div> 
-	</section>
 <section id="secreg" class="mt-5">
   <div class="container">
     <div class="section-title">
