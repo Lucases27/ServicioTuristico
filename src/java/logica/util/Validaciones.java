@@ -140,7 +140,7 @@ public class Validaciones {
 	
 	/** Recibe un string y devuelve el mismo numero en formato Double, reemplazando las comas por puntos.
 	 * @param String numero
-	 * @return Double numero
+	 * @return Double numero, o -1 en caso de que no se pueda parsear.
 	 */
 	public static Double stringToDouble(String num) {
 		boolean ok = true;
@@ -155,7 +155,7 @@ public class Validaciones {
 			ok = false;
 		}
 		
-		return ok==true?numero:0;
+		return ok==true?numero:-1;
 	}
 	
 	/**

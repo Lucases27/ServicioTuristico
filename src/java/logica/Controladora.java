@@ -1,6 +1,7 @@
 package logica;
 
 import java.util.Date;
+import logica.util.Validaciones;
 import persistencia.ClienteJpaController;
 import persistencia.ControladoraPersistencia;
 import persistencia.exceptions.NonexistentEntityException;
@@ -11,8 +12,32 @@ public class Controladora {
     public boolean crearEmpleado(String nombre, String apellido, String direccion, 
             String dni, String nacionalidad, String celular, String email, String cargo,
             double sueldo, String nombreUsuario, String pass, Date fNac) throws NonexistentEntityException {
-        return controlPersis.crearEmpleado(nombre,apellido,direccion,dni,nacionalidad,celular,email,cargo,
-                                    sueldo,nombreUsuario,pass,fNac);
+        boolean alta = false;
+        if(Validaciones.validaCampo(nombre)){
+            if(Validaciones.validaCampo(apellido)){
+                if(Validaciones.validaCampo(direccion)){
+                    if (Validaciones.validaCampo(nacionalidad)) {
+                        if(Validaciones.validaCampo(cargo)){
+                            if(Validaciones.validaCampo(nombreUsuario)){
+                                if(Validaciones.validaCampo(pass)){
+                                    if(Validaciones.validaEmail(email)){
+                                        alta =  controlPersis.crearEmpleado(nombre,apellido,direccion,dni,nacionalidad,celular,email,cargo,
+                                                                            sueldo,nombreUsuario,pass,fNac);
+                                    }
+                                }
+                                
+                            }
+                        }
+                        
+                    }
+                }
+            }
+        }
+        return alta;
+    }
+
+    public boolean login(String user, String pass) {
+        return controlPersis.login(user,pass);
     }
     
     

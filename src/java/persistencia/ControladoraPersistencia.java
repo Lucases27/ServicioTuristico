@@ -62,4 +62,23 @@ public class ControladoraPersistencia {
         }
         return true;
     }
+    
+    /**
+     * Recibe dos strings, usuario y contraseña y se fija que matchen con alguno de los usuarios en la tabla.
+     * @param user
+     * @param pass
+     * @return retorna true si logeo exitoso, false en caso contrario
+     */
+    public boolean login(String user, String pass) {
+        boolean login = false;
+        List<Usuario> users = usuarioJPA.findUsuarioEntities();
+        for (Usuario usuario : users) {
+            if(usuario.getNombre_usuario().equals(user)){
+                if(usuario.getContrasenia().equals(pass)){
+                    login = true;
+                }
+            }
+        }
+        return login;
+    }
 }

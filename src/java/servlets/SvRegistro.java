@@ -6,12 +6,14 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import logica.Controladora;
+import logica.util.Validaciones;
 
 @WebServlet(name = "SvRegistro", urlPatterns = {"/SvRegistro"})
 public class SvRegistro extends HttpServlet {
@@ -32,6 +34,8 @@ public class SvRegistro extends HttpServlet {
             throws ServletException, IOException {
         Controladora control = new Controladora();
         
+        String mensaje = "";
+        String url = "index.jsp";
         String nombre = request.getParameter("nombre");
         String apellido = request.getParameter("apellido");
         String direccion = request.getParameter("direccion");
@@ -40,19 +44,24 @@ public class SvRegistro extends HttpServlet {
         String celular = request.getParameter("celular");
         String email = request.getParameter("email");
         String cargo = request.getParameter("cargo");
-        double sueldo = Double.parseDouble(request.getParameter("sueldo"));
+        double sueldo = 0;
+        sueldo = Validaciones.stringToDouble(request.getParameter("sueldo"));
+        if(sueldo == -1){
+            mensaje = "sueldo invalido.";
+        }
+        
         String fecha_nac = request.getParameter("fechaNacimiento");
         String nombreUsuario  = request.getParameter("nombreUsuario");
         String pass = request.getParameter("pass");
         Date fNac = null;
         boolean alta = false;
-        String mensaje = "";
+        
         
         try {
             fNac = new SimpleDateFormat("yyyy-MM-dd").parse(fecha_nac);
         } catch (Exception e) {
-            System.out.println("no se pudo");
         }
+        
         
         try {
             alta = control.crearEmpleado(nombre, apellido,direccion,dni,nacionalidad,celular,
@@ -62,10 +71,12 @@ public class SvRegistro extends HttpServlet {
         if(alta){
             mensaje = "Empleado creado con exito!";
         }else{
-            mensaje = "Error al crear el empleado. USUARIO O DNI YA EXISTENTES.";
+            mensaje = "Error al crear el empleado. Usuario o dni ya existente o invalidos.";
+            url = "registro.jsp";
         }
-        
-        System.out.println("mensaje: "+mensaje);
+        request.setAttribute("mensaje", mensaje);
+        RequestDispatcher dispatcher = request.getRequestDispatcher(url);
+        dispatcher.forward(request, response);
     }
 
 
