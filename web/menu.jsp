@@ -8,24 +8,19 @@
             <h2><%=request.getAttribute("tituloSeccion")%></h2>
         </div>
         <div class="row">
-            <div class="col-lg-4 col-md-6 d-flex ">
+            <div class="col-lg-6 col-md-6 d-flex ">
                 <div class="icon-box">							
-                    <h4><a href="SvMenu?alta=<%=request.getAttribute("tituloSeccion")%>">Nuevo registro</a></h4>
+                    <h4><a href="SvMenu?menu=alta&seccion=<%=request.getAttribute("tituloSeccion")%>">Nuevo registro</a></h4>
                     <p>Carga un nuevo registro a la base de datos.</p>
                 </div>
             </div>
-            <div class="col-lg-4 col-md-6 d-flex ">
+            <div class="col-lg-6 col-md-6 d-flex ">
                 <div class="icon-box">							
-                    <h4><a href="SvMenu?ver=<%=request.getAttribute("tituloSeccion")%>">Ver registros</a></h4>
-                    <p>Listar todos los registros disponibles.</p>
+                    <h4><a href="SvMenu?menu=ver&seccion=<%=request.getAttribute("tituloSeccion")%>">Ver registros</a></h4>
+                    <p>Listar todos los registros disponibles. Tambien puedes eliminar o modificarlos.</p>
                 </div>
             </div>
-            <div class="col-lg-4 col-md-6 d-flex ">
-                <div class="icon-box">							
-                    <h4><a href="SvMenu?editar=<%=request.getAttribute("tituloSeccion")%>">Modificar o eliminar</a></h4>
-                    <p>Editar o eliminar registros.</p>
-                </div>
-            </div>
+
         </div>
     </div> 
 </section>

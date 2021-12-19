@@ -81,4 +81,16 @@ public class ControladoraPersistencia {
         }
         return login;
     }
+
+    public List<Empleado> getEmpleados() {
+        return empleadoJPA.findEmpleadoEntities();
+    }
+
+    public void borrarEmpleado(int idEmpleado) throws NonexistentEntityException {
+        int idUsuario = empleadoJPA.findEmpleado(idEmpleado).getUsuario().getId_usuario();
+        empleadoJPA.destroy(idEmpleado);
+        usuarioJPA.destroy(idUsuario);
+        // Empleado tiene un Usuario adentro, entonces primero borramos empleado y 
+        // luego el usuario. pero nos guardamos el id primero.
+    }
 }

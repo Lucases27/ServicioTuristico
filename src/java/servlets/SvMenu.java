@@ -5,27 +5,20 @@
 package servlets;
 
 import java.io.IOException;
-import java.util.List;
-import java.util.logging.Level;
-import java.util.logging.Logger;
+import java.io.PrintWriter;
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import logica.Controladora;
-import logica.Empleado;
-import persistencia.exceptions.NonexistentEntityException;
 
 /**
  *
  * @author Nadia
  */
-@WebServlet(name = "SvEmpleados", urlPatterns = {"/SvEmpleados"})
-public class SvEmpleados extends HttpServlet {
-    
-    Controladora control = new Controladora();
+@WebServlet(name = "SvMenu", urlPatterns = {"/SvMenu"})
+public class SvMenu extends HttpServlet {
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -52,38 +45,11 @@ public class SvEmpleados extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        String menu = "";
-        int idEmpleado = 0;
-        String url = "index.jsp";
-        String mensaje = "";
+        String menu = request.getParameter("menu");
+        String seccion = request.getParameter("seccion");
+        String url = "Sv"+seccion;
         
-        if(request.getAttribute("menu") != null){
-            menu = (String)request.getAttribute("menu");
-            if(menu.equals("ver")){
-                url = "verEmpleados.jsp";
-            }
-            if(menu.equals("alta")){
-                url = "altaEmpleados.jsp";
-            }
-        }
-        
-        if(request.getParameter("eliminar") != null){
-            idEmpleado = Integer.parseInt(request.getParameter("eliminar"));
-            try {
-                control.borrarEmpleado(idEmpleado);
-                mensaje = "Empleado borrado exitosamente!";
-            } catch (NonexistentEntityException ex) {
-                mensaje = "No se pudo borrar el empleado.";
-            }
-            url = "verEmpleados.jsp";
-        }
-        
-        
-        
-        List<Empleado> empleados = control.getEmpleados();
-        request.setAttribute("empleados", empleados);
-        request.setAttribute("mensaje", mensaje);
-        request.setAttribute("tituloSeccion", "Empleados");
+        request.setAttribute("menu", menu);
         RequestDispatcher dispatcher = request.getRequestDispatcher(url);
         dispatcher.forward(request, response);
     }

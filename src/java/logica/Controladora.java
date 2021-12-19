@@ -1,6 +1,7 @@
 package logica;
 
 import java.util.Date;
+import java.util.List;
 import logica.util.Validaciones;
 import persistencia.ClienteJpaController;
 import persistencia.ControladoraPersistencia;
@@ -38,6 +39,14 @@ public class Controladora {
 
     public boolean login(String user, String pass) {
         return controlPersis.login(user,pass);
+    }
+
+    public List<Empleado> getEmpleados() {
+        return controlPersis.getEmpleados();
+    }
+
+    public void borrarEmpleado(int idEmpleado) throws NonexistentEntityException {
+        controlPersis.borrarEmpleado(idEmpleado);
     }
     
     
