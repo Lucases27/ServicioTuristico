@@ -28,6 +28,7 @@
                             <li><a class="nav-link scrollto" href="SvServicios">Servicios</a></li>
                             <li><a class="nav-link scrollto" href="SvPaquetes">Paquetes</a></li>
                             <li><a class="nav-link scrollto" href="SvClientes">Clientes</a></li>
+                            <li><a class="nav-link scrollto" href="SvEmpleados">Empleados</a></li>
                             <li><a class="nav-link scrollto" href="SvVentas">Ventas</a></li>
                             <li><a class="nav-link scrollto" href="SvLogout">Salir</a></li>
                       <%}
