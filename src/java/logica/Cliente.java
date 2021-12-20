@@ -47,6 +47,18 @@ public class Cliente implements Serializable {
         this.fecha_nac = fecha_nac;
         this.lista_ventas = lista_ventas;
     }
+    
+        public Cliente(String nombre, String apellido, String direccion, String dni, 
+                        String nacionalidad, String celular, String email, Date fecha_nac) {
+        this.nombre = nombre;
+        this.apellido = apellido;
+        this.direccion = direccion;
+        this.dni = dni;
+        this.nacionalidad = nacionalidad;
+        this.celular = celular;
+        this.email = email;
+        this.fecha_nac = fecha_nac;
+    }
 
     public List<Venta> getLista_ventas() {
         return lista_ventas;

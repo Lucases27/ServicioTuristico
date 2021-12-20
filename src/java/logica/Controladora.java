@@ -48,9 +48,20 @@ public class Controladora {
     public void borrarEmpleado(int idEmpleado) throws NonexistentEntityException {
         controlPersis.borrarEmpleado(idEmpleado);
     }
-    
-    
-    
-    
-    
+
+    public boolean crearCliente(String nombre, String apellido, String direccion, String dni, String nacionalidad, String celular, String email, Date fNac) {
+        boolean alta = false;
+        if(Validaciones.validaCampo(nombre)){
+            if(Validaciones.validaCampo(apellido)){
+                if(Validaciones.validaCampo(direccion)){
+                    if (Validaciones.validaCampo(nacionalidad)) {
+                        if(Validaciones.validaEmail(email)){
+                            alta = controlPersis.crearCliente(nombre,apellido,direccion,dni,nacionalidad,celular,email,fNac);
+                        }
+                    }            
+                }
+            }        
+        }
+        return alta;
+    }
 }

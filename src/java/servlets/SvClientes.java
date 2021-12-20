@@ -6,12 +6,16 @@ package servlets;
 
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import logica.Controladora;
+import logica.util.Validaciones;
 
 /**
  *
@@ -45,8 +49,23 @@ public class SvClientes extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
+        String menu = "";
+        int idCliente = 0;
+        String url = "index.jsp";
+        String mensaje = "";
+        if(request.getAttribute("menu") != null){
+            menu = (String)request.getAttribute("menu");
+            if(menu.equals("ver")){
+                url = "verClientes.jsp";
+            }
+            if(menu.equals("alta")){
+                url = "altaClientes.jsp";
+            }
+       }
+        
+        
         request.setAttribute("tituloSeccion", "Clientes");
-        RequestDispatcher dispatcher = request.getRequestDispatcher("index.jsp");
+        RequestDispatcher dispatcher = request.getRequestDispatcher(url);
         dispatcher.forward(request, response);
     }
 
@@ -61,7 +80,38 @@ public class SvClientes extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        processRequest(request, response);
+        Controladora control = new Controladora();
+        
+        String mensaje = "";
+        String url = "index.jsp";
+        String nombre = request.getParameter("nombre");
+        String apellido = request.getParameter("apellido");
+        String direccion = request.getParameter("direccion");
+        String dni = request.getParameter("dni");
+        String nacionalidad = request.getParameter("nacionalidad");
+        String celular = request.getParameter("celular");
+        String email = request.getParameter("email");
+        String fecha_nac = request.getParameter("fechaNacimiento");
+        Date fNac = null;
+        boolean alta = false;
+        
+        try {
+            fNac = new SimpleDateFormat("yyyy-MM-dd").parse(fecha_nac);
+        } catch (Exception e) {
+        }
+        
+        alta = control.crearCliente(nombre, apellido,direccion,dni,nacionalidad,
+                             celular,email,fNac);
+        if(alta){
+            mensaje = "Cliente creado con exito!";
+            url = "altaClientes.jsp";
+        }else{
+            mensaje = "Error al crear el Cliente. Dni repetido o invalido.";
+            url = "altaClientes.jsp";
+        }
+        request.setAttribute("mensaje", mensaje);
+        RequestDispatcher dispatcher = request.getRequestDispatcher(url);
+        dispatcher.forward(request, response);
     }
 
     /**

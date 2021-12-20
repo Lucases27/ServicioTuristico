@@ -2,6 +2,7 @@ package persistencia;
 
 import java.util.Date;
 import java.util.List;
+import logica.Cliente;
 import logica.Empleado;
 import logica.Usuario;
 import org.apache.jasper.tagplugins.jstl.core.ForEach;
@@ -92,5 +93,16 @@ public class ControladoraPersistencia {
         usuarioJPA.destroy(idUsuario);
         // Empleado tiene un Usuario adentro, entonces primero borramos empleado y 
         // luego el usuario. pero nos guardamos el id primero.
+    }
+
+    public boolean crearCliente(String nombre, String apellido, String direccion, String dni, String nacionalidad, String celular, String email, Date fNac) {
+        boolean alta = false;
+        Cliente cliente = new Cliente(nombre, apellido, direccion, dni, nacionalidad, celular, email, fNac);
+        try {
+            clienteJPA.create(cliente);
+            alta = true;
+        } catch (Exception e) {
+        }
+        return alta;
     }
 }
