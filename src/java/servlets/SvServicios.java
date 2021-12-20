@@ -5,13 +5,19 @@
 package servlets;
 
 import java.io.IOException;
-import java.io.PrintWriter;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.List;
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import logica.Controladora;
+import logica.Servicio;
+import logica.util.Validaciones;
+import persistencia.exceptions.NonexistentEntityException;
 
 /**
  *
@@ -45,8 +51,38 @@ public class SvServicios extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
+        Controladora control = new Controladora();
+        String menu = "";
+        int idServicio = 0;
+        String url = "index.jsp";
+        String mensaje = "";
+        
+        if(request.getAttribute("menu") != null){
+            menu = (String)request.getAttribute("menu");
+            if(menu.equals("ver")){
+                url = "verServicios.jsp";
+            }
+            if(menu.equals("alta")){
+                url = "altaServicios.jsp";
+            }
+        }
+        
+        if(request.getParameter("eliminar") != null){
+            idServicio = Integer.parseInt(request.getParameter("eliminar"));
+            try {
+                control.borrarServicio(idServicio);
+                mensaje = "Servicio borrado exitosamente!";
+            } catch (NonexistentEntityException ex) {
+                mensaje = "No se pudo borrar el servicio.";
+            }
+            url = "verServicios.jsp";
+        }
+       
+        
+        List<Servicio> servicios = control.getServicios();
+        request.setAttribute("servicios", servicios);
         request.setAttribute("tituloSeccion", "Servicios");
-        RequestDispatcher dispatcher = request.getRequestDispatcher("index.jsp");
+        RequestDispatcher dispatcher = request.getRequestDispatcher(url);
         dispatcher.forward(request, response);
     }
 
@@ -61,7 +97,34 @@ public class SvServicios extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        processRequest(request, response);
+        Controladora control = new Controladora();
+        
+        String mensaje = "";
+        String url = "index.jsp";
+        String nombre = request.getParameter("nombre");
+        String descripcion = request.getParameter("descripcion");
+        String destino = request.getParameter("destino");
+        double costo = Validaciones.stringToDouble(request.getParameter("costo"));
+        String fechaServicio = request.getParameter("fecha");
+        Date fecha = null;
+        boolean alta = false;
+        
+        try {
+            fecha = new SimpleDateFormat("yyyy-MM-dd").parse(fechaServicio);
+        } catch (Exception e) {
+        }
+        
+        alta = control.crearServicio(nombre,descripcion,destino,fecha,costo);
+        if(alta){
+            mensaje = "Servicio creado con exito!";
+            url = "altaServicios.jsp";
+        }else{
+            mensaje = "Error al crear el Servicio.";
+            url = "altaServicios.jsp";
+        }
+        request.setAttribute("mensaje", mensaje);
+        RequestDispatcher dispatcher = request.getRequestDispatcher(url);
+        dispatcher.forward(request, response);
     }
 
     /**

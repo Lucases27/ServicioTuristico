@@ -4,6 +4,7 @@ import java.util.Date;
 import java.util.List;
 import logica.Cliente;
 import logica.Empleado;
+import logica.Servicio;
 import logica.Usuario;
 import org.apache.jasper.tagplugins.jstl.core.ForEach;
 import persistencia.exceptions.NonexistentEntityException;
@@ -112,5 +113,24 @@ public class ControladoraPersistencia {
 
     public void borrarCliente(int idCliente) throws NonexistentEntityException {
         clienteJPA.destroy(idCliente);
+    }
+
+    public boolean crearServicio(String nombre, String descripcion, String destino, Date fecha, double costo) {
+        boolean alta = false;
+        Servicio servicio = new Servicio(nombre,descripcion,destino,fecha,costo);
+        try {
+            servicioJPA.create(servicio);
+            alta = true;
+        } catch (Exception e) {
+        }
+        return alta;
+    }
+
+    public List<Servicio> getServicios() {
+        return servicioJPA.findServicioEntities();
+    }
+
+    public void borrarServicio(int idServicio) throws NonexistentEntityException {
+        servicioJPA.destroy(idServicio);
     }
 }
