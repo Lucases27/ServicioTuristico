@@ -73,6 +73,9 @@ public class SvRegistro extends HttpServlet {
         }else{
             mensaje = "Error al crear el empleado. Usuario o dni ya existente o invalidos.";
             url = "registro.jsp";
+            if(request.getParameter("altaEmpleado") != null){
+                url = "altaEmpleados.jsp";
+            }
         }
         request.setAttribute("mensaje", mensaje);
         RequestDispatcher dispatcher = request.getRequestDispatcher(url);
