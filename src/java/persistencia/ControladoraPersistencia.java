@@ -147,4 +147,29 @@ public class ControladoraPersistencia {
         servicio.setFecha_servicio(fecha);
         servicioJPA.edit(servicio);
     }
+
+    public Empleado getEmpleado(int idEmpleado) {
+        return empleadoJPA.findEmpleado(idEmpleado);
+    }
+
+    public void modificarEmpleado(int idEmpleado, String nombre, String apellido, String direccion, String dni,
+                                    String nacionalidad, String celular, String email, String cargo, double sueldo,
+                                    Date fNac, String nombreUsuario, String pass) throws Exception {
+        Empleado emp = empleadoJPA.findEmpleado(idEmpleado);
+        emp.setNombre(nombre);
+        emp.setApellido(apellido);
+        emp.setDireccion(direccion);
+        emp.setDni(dni);
+        emp.setNacionalidad(nacionalidad);
+        emp.setCelular(celular);
+        emp.setEmail(email);
+        emp.setCargo(cargo);
+        emp.setSueldo(sueldo);
+        emp.setFecha_nac(fNac);
+        Usuario usu = emp.getUsuario();
+        usu.setNombre_usuario(nombreUsuario);
+        usu.setContrasenia(nombre);
+        empleadoJPA.edit(emp);
+        usuarioJPA.edit(usu);
+    }
 }

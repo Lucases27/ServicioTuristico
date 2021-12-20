@@ -109,4 +109,23 @@ public class Controladora {
         }
         return alta;
     }
+
+    public Empleado getEmpleado(int idEmpleado) {
+        return controlPersis.getEmpleado(idEmpleado);
+    }
+
+    public boolean modificarEmpleado(int idEmpleado, String nombre, String apellido, String direccion, String dni,
+                                    String nacionalidad, String celular, String email, String cargo, double sueldo, Date fNac,
+                                    String nombreUsuario, String pass) throws Exception {
+        boolean alta = false;
+        if(Validaciones.validaCampo(nombre)){
+            if(Validaciones.validaCampo(apellido)){
+                if(Validaciones.validaCampo(direccion)){
+                    controlPersis.modificarEmpleado(idEmpleado,nombre,apellido,direccion,dni,nacionalidad,celular,email,cargo,sueldo,fNac,nombreUsuario,pass);
+                    alta = true;
+                }
+            }
+        }
+        return alta;
+    }
 }

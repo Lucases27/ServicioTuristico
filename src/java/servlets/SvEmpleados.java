@@ -5,6 +5,8 @@
 package servlets;
 
 import java.io.IOException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -16,6 +18,8 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import logica.Controladora;
 import logica.Empleado;
+import logica.Servicio;
+import logica.util.Validaciones;
 import persistencia.exceptions.NonexistentEntityException;
 
 /**
@@ -78,6 +82,13 @@ public class SvEmpleados extends HttpServlet {
             url = "verEmpleados.jsp";
         }
         
+        if(request.getParameter("modificar") != null){
+            idEmpleado = Integer.parseInt(request.getParameter("modificar"));
+            Empleado empleado = control.getEmpleado(idEmpleado);
+            request.setAttribute("empleado", empleado);
+            url = "modificaEmpleados.jsp";
+        }
+        
         
         
         List<Empleado> empleados = control.getEmpleados();
@@ -99,7 +110,60 @@ public class SvEmpleados extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        processRequest(request, response);
+        Controladora control = new Controladora();
+        
+        String mensaje = "";
+        String url = "index.jsp";
+        int idEmpleado = 0;
+        String nombre = request.getParameter("nombre");
+        String apellido = request.getParameter("apellido");
+        String direccion = request.getParameter("direccion");
+        String dni = request.getParameter("dni");
+        String nacionalidad = request.getParameter("nacionalidad");
+        String celular = request.getParameter("celular");
+        String email = request.getParameter("email");
+        String cargo = request.getParameter("cargo");
+        double sueldo = 0;
+        sueldo = Validaciones.stringToDouble(request.getParameter("sueldo"));
+        if(sueldo == -1){
+            mensaje = "sueldo invalido.";
+        }
+        String fecha_nac = request.getParameter("fecha");
+        String nombreUsuario  = request.getParameter("usuario");
+        String pass = request.getParameter("pass");
+        Date fNac = null;
+        boolean alta = false;
+        
+        try {
+            fNac = new SimpleDateFormat("yyyy-MM-dd").parse(fecha_nac);
+        } catch (Exception e) {
+        }
+        
+        if(request.getParameter("modificar") != null){
+            idEmpleado = Integer.parseInt(request.getParameter("id"));
+            try {
+                alta = control.modificarEmpleado(idEmpleado,nombre,apellido,direccion,dni
+                                                ,nacionalidad,celular,email,cargo,sueldo,fNac,nombreUsuario,pass);
+            } catch (Exception ex) { 
+            }
+            if(alta){
+                mensaje = "Empleado modificado con exito";
+                url = "SvEmpleado?menu=ver";
+            }else{
+                mensaje = "Error al modificar.";
+                url = "SvEmpleado?menu=ver";
+            }
+            
+            
+            request.removeAttribute("modificar");
+            request.setAttribute("mensaje", mensaje);
+            RequestDispatcher dispatcher = request.getRequestDispatcher(url);
+            dispatcher.forward(request, response);
+        }
+
+        request.setAttribute("mensaje", mensaje);
+        RequestDispatcher dispatcher = request.getRequestDispatcher(url);
+        dispatcher.forward(request, response);
     }
 
     /**
