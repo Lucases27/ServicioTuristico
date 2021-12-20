@@ -105,4 +105,12 @@ public class ControladoraPersistencia {
         }
         return alta;
     }
+
+    public List<Cliente> getClientes() {
+        return clienteJPA.findClienteEntities();
+    }
+
+    public void borrarCliente(int idCliente) throws NonexistentEntityException {
+        clienteJPA.destroy(idCliente);
+    }
 }

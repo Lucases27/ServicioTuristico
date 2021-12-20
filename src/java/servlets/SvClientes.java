@@ -5,17 +5,19 @@
 package servlets;
 
 import java.io.IOException;
-import java.io.PrintWriter;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.List;
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import logica.Cliente;
 import logica.Controladora;
 import logica.util.Validaciones;
+import persistencia.exceptions.NonexistentEntityException;
 
 /**
  *
@@ -49,10 +51,12 @@ public class SvClientes extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
+        Controladora control = new Controladora();
         String menu = "";
         int idCliente = 0;
         String url = "index.jsp";
         String mensaje = "";
+        
         if(request.getAttribute("menu") != null){
             menu = (String)request.getAttribute("menu");
             if(menu.equals("ver")){
@@ -62,8 +66,20 @@ public class SvClientes extends HttpServlet {
                 url = "altaClientes.jsp";
             }
        }
+       if(request.getParameter("eliminar") != null){
+            idCliente = Integer.parseInt(request.getParameter("eliminar"));
+            try {
+                control.borrarCliente(idCliente);
+                mensaje = "Cliente borrado exitosamente!";
+            } catch (NonexistentEntityException ex) {
+                mensaje = "No se pudo borrar el cliente.";
+            }
+            url = "verClientes.jsp";
+        }
+       
         
-        
+        List<Cliente> clientes = control.getClientes();
+        request.setAttribute("clientes", clientes);
         request.setAttribute("tituloSeccion", "Clientes");
         RequestDispatcher dispatcher = request.getRequestDispatcher(url);
         dispatcher.forward(request, response);

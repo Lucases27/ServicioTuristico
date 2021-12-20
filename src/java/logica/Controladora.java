@@ -64,4 +64,12 @@ public class Controladora {
         }
         return alta;
     }
+
+    public List<Cliente> getClientes() {
+        return controlPersis.getClientes();
+    }
+
+    public void borrarCliente(int idCliente) throws NonexistentEntityException {
+        controlPersis.borrarCliente(idCliente);
+    }
 }
