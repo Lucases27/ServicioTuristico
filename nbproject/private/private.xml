@@ -4,15 +4,13 @@
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
             <file>file:/C:/Lucas/Java/ServicioTuristico/web/registro.jsp</file>
-            <file>file:/C:/Lucas/Java/ServicioTuristico/src/java/logica/util/Validaciones.java</file>
+            <file>file:/C:/Lucas/Java/ServicioTuristico/web/altaClientes.jsp</file>
             <file>file:/C:/Lucas/Java/ServicioTuristico/src/java/logica/Controladora.java</file>
-            <file>file:/C:/Lucas/Java/ServicioTuristico/web/login.jsp</file>
-            <file>file:/C:/Lucas/Java/ServicioTuristico/src/java/servlets/SvServicios.java</file>
-            <file>file:/C:/Lucas/Java/ServicioTuristico/src/java/servlets/SvLogout.java</file>
-            <file>file:/C:/Lucas/Java/ServicioTuristico/web/index.jsp</file>
-            <file>file:/C:/Lucas/Java/ServicioTuristico/src/java/servlets/SvLogin.java</file>
+            <file>file:/C:/Lucas/Java/ServicioTuristico/src/java/servlets/SvEmpleados.java</file>
             <file>file:/C:/Lucas/Java/ServicioTuristico/src/java/servlets/SvClientes.java</file>
+            <file>file:/C:/Lucas/Java/ServicioTuristico/web/verClientes.jsp</file>
             <file>file:/C:/Lucas/Java/ServicioTuristico/src/java/persistencia/ControladoraPersistencia.java</file>
+            <file>file:/C:/Lucas/Java/ServicioTuristico/src/java/servlets/SvMenu.java</file>
             <file>file:/C:/Lucas/Java/ServicioTuristico/src/java/servlets/SvRegistro.java</file>
             <file>file:/C:/Lucas/Java/ServicioTuristico/web/menu.jsp</file>
         </group>
