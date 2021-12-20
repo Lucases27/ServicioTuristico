@@ -8,6 +8,8 @@ import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -56,7 +58,6 @@ public class SvServicios extends HttpServlet {
         int idServicio = 0;
         String url = "index.jsp";
         String mensaje = "";
-        
         if(request.getAttribute("menu") != null){
             menu = (String)request.getAttribute("menu");
             if(menu.equals("ver")){
@@ -76,6 +77,12 @@ public class SvServicios extends HttpServlet {
                 mensaje = "No se pudo borrar el servicio.";
             }
             url = "verServicios.jsp";
+        }
+        if(request.getParameter("modificar") != null){
+            idServicio = Integer.parseInt(request.getParameter("modificar"));
+            Servicio servicio = control.getServicio(idServicio);
+            request.setAttribute("servicio", servicio);
+            url = "modificaServicios.jsp";
         }
        
         
@@ -101,6 +108,7 @@ public class SvServicios extends HttpServlet {
         
         String mensaje = "";
         String url = "index.jsp";
+        int idServicio = 0;
         String nombre = request.getParameter("nombre");
         String descripcion = request.getParameter("descripcion");
         String destino = request.getParameter("destino");
@@ -114,6 +122,27 @@ public class SvServicios extends HttpServlet {
         } catch (Exception e) {
         }
         
+        if(request.getParameter("modificar") != null){
+            idServicio = Integer.parseInt(request.getParameter("id"));
+            try {
+                alta = control.modificarServicio(idServicio,nombre,descripcion,destino,costo,fecha);
+            } catch (Exception ex) { 
+            }
+            if(alta){
+                mensaje = "Servicio modificado con exito";
+                url = "SvServicios?menu=ver";
+            }else{
+                mensaje = "Error al modificar.";
+                url = "SvServicios?menu=ver";
+            }
+            
+            
+            request.removeAttribute("modificar");
+            request.setAttribute("mensaje", mensaje);
+            RequestDispatcher dispatcher = request.getRequestDispatcher(url);
+            dispatcher.forward(request, response);
+        }
+
         alta = control.crearServicio(nombre,descripcion,destino,fecha,costo);
         if(alta){
             mensaje = "Servicio creado con exito!";

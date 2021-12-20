@@ -133,4 +133,18 @@ public class ControladoraPersistencia {
     public void borrarServicio(int idServicio) throws NonexistentEntityException {
         servicioJPA.destroy(idServicio);
     }
+
+    public Servicio getServicio(int idServicio) {
+        return servicioJPA.findServicio(idServicio);
+    }
+
+    public void modificarServicio(int idServicio, String nombre, String descripcion, String destino, double costo, Date fecha) throws Exception {
+        Servicio servicio = servicioJPA.findServicio(idServicio);
+        servicio.setNombre(nombre);
+        servicio.setDescripcion_breve(descripcion);
+        servicio.setDestino_servicio(destino);
+        servicio.setCosto_servicio(costo);
+        servicio.setFecha_servicio(fecha);
+        servicioJPA.edit(servicio);
+    }
 }

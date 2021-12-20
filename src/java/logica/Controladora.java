@@ -92,4 +92,21 @@ public class Controladora {
     public void borrarServicio(int idServicio) throws NonexistentEntityException {
         controlPersis.borrarServicio(idServicio);
     }
+
+    public Servicio getServicio(int idServicio) {
+        return controlPersis.getServicio(idServicio);
+    }
+
+    public boolean modificarServicio(int idServicio, String nombre, String descripcion, String destino, double costo, Date fecha) throws Exception {
+        boolean alta = false;
+        if(Validaciones.validaCampo(nombre)){
+            if(Validaciones.validaCampo(descripcion)){
+                if(Validaciones.validaCampo(destino)){
+                    controlPersis.modificarServicio(idServicio,nombre,descripcion,destino,costo,fecha);
+                    alta = true;
+                }
+            }
+        }
+        return alta;
+    }
 }
