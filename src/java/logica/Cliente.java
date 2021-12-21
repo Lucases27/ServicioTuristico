@@ -4,6 +4,7 @@ import java.io.Serializable;
 import java.util.Date;
 import java.util.List;
 import javax.persistence.Basic;
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -21,6 +22,7 @@ public class Cliente implements Serializable {
     private String nombre;
     private String apellido;
     private String direccion;
+    @Column(unique = true)
     private String dni;
     private String nacionalidad;
     private String celular;
@@ -44,6 +46,18 @@ public class Cliente implements Serializable {
         this.email = email;
         this.fecha_nac = fecha_nac;
         this.lista_ventas = lista_ventas;
+    }
+    
+        public Cliente(String nombre, String apellido, String direccion, String dni, 
+                        String nacionalidad, String celular, String email, Date fecha_nac) {
+        this.nombre = nombre;
+        this.apellido = apellido;
+        this.direccion = direccion;
+        this.dni = dni;
+        this.nacionalidad = nacionalidad;
+        this.celular = celular;
+        this.email = email;
+        this.fecha_nac = fecha_nac;
     }
 
     public List<Venta> getLista_ventas() {

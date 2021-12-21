@@ -45,6 +45,13 @@ public class Servicio implements Serializable {
         this.lista_paquetes = lista_paquetes;
         this.lista_ventas = lista_ventas;
     }
+    public Servicio(String nombre, String descripcion_breve, String destino_servicio, Date fecha_servicio, double costo_servicio) {
+        this.nombre = nombre;
+        this.descripcion_breve = descripcion_breve;
+        this.destino_servicio = destino_servicio;
+        this.fecha_servicio = fecha_servicio;
+        this.costo_servicio = costo_servicio;
+    }
 
     public List<Venta> getLista_ventas() {
         return lista_ventas;

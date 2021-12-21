@@ -3,6 +3,7 @@ package logica;
 import java.io.Serializable;
 import java.util.List;
 import javax.persistence.Basic;
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -15,6 +16,7 @@ public class Usuario implements Serializable {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private int id_usuario;
     @Basic
+    @Column(unique = true)
     private String nombre_usuario;
     private String contrasenia;
     @OneToMany
@@ -28,6 +30,10 @@ public class Usuario implements Serializable {
         this.nombre_usuario = nombre_usuario;
         this.contrasenia = contrasenia;
         this.lista_ventas = lista_ventas;
+    }
+    public Usuario(String nombre_usuario, String contrasenia) {
+        this.nombre_usuario = nombre_usuario;
+        this.contrasenia = contrasenia;
     }
 
     public List<Venta> getLista_ventas() {
@@ -61,6 +67,11 @@ public class Usuario implements Serializable {
 
     public void setContrasenia(String contrasenia) {
         this.contrasenia = contrasenia;
+    }
+
+    @Override
+    public String toString() {
+        return "Usuario{" + "id_usuario=" + id_usuario + ", nombre_usuario=" + nombre_usuario + ", contrasenia=" + contrasenia + ", lista_ventas=" + lista_ventas + '}';
     }
     
     
